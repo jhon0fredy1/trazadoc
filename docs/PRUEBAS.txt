@@ -1,0 +1,40 @@
+TrazaDoc 0.1.1 completo · Node.js 20.20.1 · 4 de noviembre de 2026
+
+OK 01 · Rechaza acceso sin sesión
+OK 02 · Rechaza contraseña inválida
+OK 03 · Tres perfiles inician sesión
+OK 04 · Rechaza token alterado
+OK 05 · Catálogo con tres plantillas
+OK 06 · Crear caso
+OK 07 · Reintento idempotente devuelve el mismo caso
+OK 08 · Clave reutilizada con otro cuerpo genera conflicto
+OK 09 · Crear formulario
+OK 10 · Guardar comunes y específicos
+OK 11 · Otro formulario recupera comunes
+OK 12 · Bloquea revisión sin validar comunes
+OK 13 · Operador no valida
+OK 14 · Revisor valida
+OK 15 · Enviar a revisión
+OK 16 · Operador no finaliza
+OK 17 · Revisor crea snapshot final
+OK 18 · Finalizado bloquea edición directa
+OK 19 · Corregir requiere motivo
+OK 20 · Corrección válida se guarda
+OK 21 · Borrador recupera corrección
+OK 22 · Snapshot anterior no cambia
+OK 23 · Conflicto de versión compartida
+OK 24 · Otro caso no autorizado no es visible
+OK 25 · No mezcla datos entre casos
+OK 26 · Exige If-Match
+OK 27 · Solo una edición concurrente gana
+OK 28 · Rechaza campos desconocidos
+OK 29 · Auditoría contiene finalización
+OK 30 · Frontend y CSP disponibles
+OK 31 · JavaScript servido
+OK 32 · Datos sobreviven reinicio
+OK 33 · Frontend compatible sin randomUUID
+OK 34 · Admin autoriza operador en otro caso
+
+RESULTADO: 34 pruebas aprobadas.
+
+No probado: Docker Compose, NAT real, browser interactivo, carga y auditoría de seguridad.

@@ -1,0 +1,18 @@
+ESTE ES EL PAQUETE COMPLETO (no solo configuración Docker).
+
+1. Descomprime el ZIP y entra a la carpeta TrazaDoc.
+2. Comprueba: ls public/app.js services/gateway.js lib/core.js
+3. Si ya tienes .env del despliegue anterior, consérvalo en esa carpeta.
+4. Si NO existe, créalo:
+   docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/work" -w /work node:22-alpine node init-env.cjs
+5. No hace falta aplicar patch-http.cjs: esta versión ya es compatible.
+6. docker compose config --quiet
+7. docker compose up -d --build
+8. docker compose ps
+9. curl -fsS http://127.0.0.1:2900/health
+10. Abrir http://TU_IP_PUBLICA:2900
+
+Usuarios: admin, operador y revisor. Contraseñas en el archivo .env.
+No ejecutar docker compose down -v: borra los volúmenes.
+Solo datos ficticios. HTTP no cifra credenciales ni información.
+README.md contiene el procedimiento y los límites completos.

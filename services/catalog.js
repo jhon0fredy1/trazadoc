@@ -1,0 +1,2 @@
+'use strict';const C=require('../lib/core'),T=require('../lib/templates');C.key();
+C.serve(Number(process.env.CATALOG_PORT||3002),async(req,res,url)=>{C.user(req);if(req.method==='GET'&&url.pathname==='/templates')return C.json(res,200,T.templates.map(T.full));const m=url.pathname.match(/^\/templates\/([a-z]+)$/);if(req.method==='GET'&&m){const t=T.templates.find(t=>t.id===m[1]);if(!t)C.fail(404,'NOT_FOUND','Plantilla no encontrada.');return C.json(res,200,T.full(t))}C.fail(404,'NOT_FOUND','Ruta no encontrada.');});

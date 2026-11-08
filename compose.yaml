@@ -1,0 +1,230 @@
+name: trazadoc-mvp
+services:
+  auth:
+    build: .
+    image: trazadoc-mvp:local
+    command:
+    - node
+    - services/auth.js
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop:
+    - ALL
+    security_opt:
+    - no-new-privileges:true
+    environment:
+      DEMO_MODE: 'true'
+      DATA_DIR: /data
+      SERVICE_HOST: 0.0.0.0
+      JWT_SECRET: ${JWT_SECRET:?Configura JWT_SECRET en .env}
+      AUTH_URL: http://auth:3001
+      CATALOG_URL: http://catalog:3002
+      CASES_URL: http://cases:3003
+      FORMS_URL: http://forms:3004
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Configura ADMIN_PASSWORD en .env}
+      OPERATOR_PASSWORD: ${OPERATOR_PASSWORD:?Configura OPERATOR_PASSWORD en .env}
+      REVIEWER_PASSWORD: ${REVIEWER_PASSWORD:?Configura REVIEWER_PASSWORD en .env}
+    networks:
+    - backend
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+    healthcheck:
+      test:
+      - CMD
+      - node
+      - -e
+      - fetch('http://127.0.0.1:3001/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    volumes:
+    - auth_data:/data
+  catalog:
+    build: .
+    image: trazadoc-mvp:local
+    command:
+    - node
+    - services/catalog.js
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop:
+    - ALL
+    security_opt:
+    - no-new-privileges:true
+    environment:
+      DEMO_MODE: 'true'
+      DATA_DIR: /data
+      SERVICE_HOST: 0.0.0.0
+      JWT_SECRET: ${JWT_SECRET:?Configura JWT_SECRET en .env}
+      AUTH_URL: http://auth:3001
+      CATALOG_URL: http://catalog:3002
+      CASES_URL: http://cases:3003
+      FORMS_URL: http://forms:3004
+    networks:
+    - backend
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+    healthcheck:
+      test:
+      - CMD
+      - node
+      - -e
+      - fetch('http://127.0.0.1:3002/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+  cases:
+    build: .
+    image: trazadoc-mvp:local
+    command:
+    - node
+    - services/cases.js
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop:
+    - ALL
+    security_opt:
+    - no-new-privileges:true
+    environment:
+      DEMO_MODE: 'true'
+      DATA_DIR: /data
+      SERVICE_HOST: 0.0.0.0
+      JWT_SECRET: ${JWT_SECRET:?Configura JWT_SECRET en .env}
+      AUTH_URL: http://auth:3001
+      CATALOG_URL: http://catalog:3002
+      CASES_URL: http://cases:3003
+      FORMS_URL: http://forms:3004
+    networks:
+    - backend
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+    healthcheck:
+      test:
+      - CMD
+      - node
+      - -e
+      - fetch('http://127.0.0.1:3003/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    volumes:
+    - cases_data:/data
+  forms:
+    build: .
+    image: trazadoc-mvp:local
+    command:
+    - node
+    - services/forms.js
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop:
+    - ALL
+    security_opt:
+    - no-new-privileges:true
+    environment:
+      DEMO_MODE: 'true'
+      DATA_DIR: /data
+      SERVICE_HOST: 0.0.0.0
+      JWT_SECRET: ${JWT_SECRET:?Configura JWT_SECRET en .env}
+      AUTH_URL: http://auth:3001
+      CATALOG_URL: http://catalog:3002
+      CASES_URL: http://cases:3003
+      FORMS_URL: http://forms:3004
+    networks:
+    - backend
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+    healthcheck:
+      test:
+      - CMD
+      - node
+      - -e
+      - fetch('http://127.0.0.1:3004/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    volumes:
+    - forms_data:/data
+  gateway:
+    build: .
+    image: trazadoc-mvp:local
+    command:
+    - node
+    - services/gateway.js
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop:
+    - ALL
+    security_opt:
+    - no-new-privileges:true
+    environment:
+      DEMO_MODE: 'true'
+      DATA_DIR: /data
+      SERVICE_HOST: 0.0.0.0
+      JWT_SECRET: ${JWT_SECRET:?Configura JWT_SECRET en .env}
+      AUTH_URL: http://auth:3001
+      CATALOG_URL: http://catalog:3002
+      CASES_URL: http://cases:3003
+      FORMS_URL: http://forms:3004
+      PORT: '3000'
+      BIND_HOST: 0.0.0.0
+    networks:
+    - frontend
+    - backend
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: '3'
+    healthcheck:
+      test:
+      - CMD
+      - node
+      - -e
+      - fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    ports:
+    - 0.0.0.0:2900:3000/tcp
+    depends_on:
+      auth:
+        condition: service_healthy
+      catalog:
+        condition: service_healthy
+      cases:
+        condition: service_healthy
+      forms:
+        condition: service_healthy
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+    internal: true
+volumes:
+  auth_data: {}
+  cases_data: {}
+  forms_data: {}
